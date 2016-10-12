@@ -1,0 +1,52 @@
+package message;
+import "common.proto";
+message MsgReqHeroDataGS2DB
+{
+	required uint64 account = 1;
+}
+
+
+message MsgMapSpecialKill
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+	repeated MsgObjConfig kills = 3;
+}
+
+message MsgHeroDataDB2GS
+{
+	required uint64 account = 1;
+	required MsgHeroData Data = 2; 
+	required int32 current_chapter = 3;
+	required int32 current_section = 4;
+	required int32 free_task_count = 5;
+	required int32 last_task_advertisement_time = 6;
+	repeated MsgMapSpecialKill special_kills = 7;
+	required int32 gm_level = 8;
+}
+
+message MsgNeedCreateHeroDB2GS
+{
+	
+}
+
+message MsgSaveHeroDataGS2DB
+{
+	required uint64 account = 1;
+	required MsgHeroData Data = 2; 
+}
+
+message MsgSaveDataGS2DB
+{
+	required bytes sql = 1;
+}
+
+message MsgSaveAllHeroesGS2DB
+{
+
+}
+
+message MsgSaveAllHeroesDB2GS
+{
+
+}

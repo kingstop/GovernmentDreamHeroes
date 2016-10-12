@@ -1,0 +1,276 @@
+package message;
+import "common.proto";
+///GameLogic
+enum GameError
+{
+	Error_NO = 0;
+	Error_CanNotEnterGameTheInstanceIsLock = 1;
+	Error_CanNotEnterGameTheCharacterIsLock = 2;
+	Error_CanNotEnterGameTheSectionIsLock = 3;
+	Error_CanNotBuyHeroNotEnoughgold = 4;
+	Error_CanNotPassGameTheInstanceNotHaveEnoughGold = 5;
+	Error_NotEnterTheExitGame = 6;
+	Error_NotFoundTheChapterWhenEnterGame = 7;
+	Error_TheChapterIsNotLock = 8;
+	Error_UnlockChapterFailedNotFoundTheUnlockChapter = 9;
+	Error_UnlockChapterFailedTheRequiredSectionNotPass = 10;
+	Error_UnlockChapterFailedYouHaveToCompleteEnoughTasks = 11;
+	Error_UnlockChapterFailedYouNotHaveEnoughGold = 12;
+	Error_RefreshAdvertisementTaskFailedInCD = 13;
+	Error_RefreshAdvertisementTaskFailedNotFoundGiveUpTaskID = 14;
+	Error_RefreshAdvertisementTaskFailedUnknow = 15;
+	Error_BuyHeroFailedNotEnoughGold = 16;
+	Error_BuyHeroFailedThePriceIsOld = 17;
+	Error_BuyHeroFailedNotFoundGrid = 18;
+	Error_ModifyCurrentFailedTheCharacterIsLock = 19;
+	Error_CmdFailedRequiredGMLevel = 20;
+}
+
+
+
+message MsgS2CNotifyError
+{
+	required GameError error = 1 [default=Error_NO];
+}
+message MsgC2SReqShopConfig
+{
+
+}
+
+
+message MsgS2CShopConfigACK
+{
+	repeated MsgShopConfigInfo shop_infos = 1;
+}
+
+message MsgC2SReqGameGlobalConfig
+{
+
+}
+
+message MsgS2CSGameGlobalConfigACK
+{
+	repeated MsgChapterConfigInfo chapter_infos = 1;
+}
+
+
+message MsgS2CNewTaskNotify
+{	
+	required MsgTaskConfigInfo task = 1;
+}
+
+message MsgS2CHeroesInit
+{
+	required MsgHeroData info = 1;
+	repeated MsgTaskConfigInfo task_config_infos = 2;
+	required int32 free_advertisement_config_count = 3;
+	required int32 current_advertisement_count = 4;
+	required int64 last_advertisement_time = 5;
+	required int32 advertisement_time_cd = 6;
+	required int32 gm_level = 7;
+}
+
+
+
+
+
+
+message MsgC2SReqEnterGame
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+}
+
+
+message MsgS2CEnterGameACK
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+	repeated MsgDropBoxConfig drop_box_configs = 3;
+	repeated MsgObjConfig kill_list = 4;
+	required GameError error = 5 [default=Error_NO];
+	
+}
+
+
+message MsgKillHistroy
+{
+	required MsgObjConfig obj = 1;
+	required int32 count = 2;
+}
+
+message MsgC2SReqExitGame
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+	repeated MsgTaskInfo task_infos = 3; 
+	required int32 gold = 4;
+	required bool success = 5;
+	repeated int32 complete_tasks = 6;
+	repeated MsgObjConfig special_kill_list = 7;
+	repeated MsgKillHistroy kill_list = 8;
+}
+
+message MsgS2CExitGameACK
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+	repeated MsgTaskInfo task_infos = 3; 
+	required int32 current_gold = 4;
+	repeated MsgIntPair task_gift = 5;
+	required bool success = 6;
+	required int32 complete_task_count = 7;
+	required GameError error = 8 [default=Error_NO];
+}
+
+message MsgC2SReqUnlockChapter
+{
+	required int32 chapter_id = 1;
+}
+
+message MsgC2SReqAdvertisementApplyTask
+{
+
+}
+
+message MsgS2CAdvertisementApplyTaskACK
+{
+	required GameError error = 1 [default=Error_NO];
+	repeated MsgTaskConfigInfo infos = 2;
+}
+
+message MsgC2SReqAdvertisementRefreshTask
+{
+	required int32 give_up_task_id = 1;
+}
+
+message MsgS2CAdvertisementRefreshTaskACK
+{
+	required int32 give_up_task_id = 1;
+	required GameError error = 2 [default=Error_NO];
+	repeated MsgTaskConfigInfo infos = 3;
+}
+
+message MsgC2SReqModifyCurrentHero
+{
+	required int32 current_grid = 1;
+}
+
+message MsgS2CModifyCurrentHeroACK
+{
+	required int32 current_grid = 1;
+	required GameError error = 2 [default=Error_NO];
+}
+
+message MsgS2CUnlockChapterACK
+{
+	required int32 chapter_id = 1;
+	required int32 current_gold = 2;
+	required GameError error = 3 [default=Error_NO];
+}
+
+message MsgC2SReqBuyHero
+{
+	required int32 grid = 1;
+	required int32 gold = 2;
+}
+
+message MsgS2CBuyHeroACK
+{
+	required int32 grid = 1;	
+	required int32 current_gold = 2;	
+	required GameError error = 3 [default=Error_NO];
+}
+
+message MsgC2SReqGoldShopConfigs
+{
+
+}
+
+message MsgS2CGoldShopConfigsACK
+{
+	repeated MsgGoldShopConfigInfo infos = 1;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+message MsgC2SCmdReqShowGMLevel
+{
+	
+}
+
+message MsgS2CCmdShowGMLevelACK
+{
+	required int32 gm_level = 1;
+	required GameError error = 2 [default=Error_NO];
+}
+
+message MsgC2SCmdReqModifyGMLevel
+{
+	required string name = 1;
+	required int32 level = 2;
+	
+}
+
+
+message MsgS2CCmdModifyGMLevelACK
+{
+	required string name = 1;
+	required int32 level = 2;
+	required GameError error = 3 [default=Error_NO];
+}
+
+message MsgC2SCmdReqEnterGame
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+}
+
+message MsgC2SCmdReqResetMap
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+}
+
+message MsgS2CCmdResetMapACK
+{
+	required int32 chapter_id = 1;
+	required int32 section_id = 2;
+	required GameError error = 3 [default=Error_NO];
+}
+
+message MsgC2SCmdReqResetGame
+{
+
+}
+
+message MsgS2CCmdResetGameACK
+{
+	required MsgHeroData info = 1;
+	required int32 current_advertisement_count = 2;
+	required int64 last_advertisement_time = 3;
+	required GameError error = 4 [default=Error_NO];
+}
+
+message MsgC2SCmdReqModifyGold
+{
+	required int32 gold = 1;
+}
+
+message MsgS2CCmdModifyGoldACK
+{
+	required int32 gold = 1;
+}
+
+
+message MsgS2CCmdReqReplaceTask
+{
+	required int32 task_count = 1;
+	
+}
+message MsgS2CCmdReplaceTaskACK
+{
+	required GameError error = 1 [default=Error_NO];
+	repeated MsgTaskConfigInfo infos = 2;
+}
+//////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,108 @@
+package message;
+
+enum SubType
+{
+	DEFAULT = 0;
+	MONSTER = 1;
+	INTERACTIVE = 2;
+}
+
+message MsgObjConfig
+{
+	required SubType type = 1[default=DEFAULT];
+	required int32 id = 2;
+
+}
+
+message MsgDropBoxConfig
+{
+	required MsgObjConfig obj = 1;	
+	required int32 base_gold = 2;
+	required int32 random_gold = 3;	
+}
+
+
+message MsgIntPair
+{
+	required int32 number_1 = 1;
+	required int32 number_2 = 2;
+}
+
+message MsgHeroData
+{	
+	required string name = 1;		
+	required int32 gold = 2;
+	repeated MsgIntPair records = 3;
+	repeated bool heroes = 4;
+	repeated MsgTaskInfo tasks = 5;
+	required int32 current_hero = 6;
+	required int32 complete_task_count = 7;
+	
+}
+
+
+enum TaskType
+{
+	TaskType_NULL = 0;
+	TaskType_KillMonster = 1;
+	TaskType_PassGame = 2;
+	TaskType_UnKnown = 3;
+	TaskType_LimitLevel = 4;
+	TaskType_LimitRevive = 5;
+	TaskType_LimitTime_KillMonster = 6;
+	TaskType_Accumulate_KillMonster = 7;
+}
+
+message MsgTaskConditionInfo
+{
+	required TaskType taskType = 1[default=TaskType_NULL];
+	required int32 argument_1 = 2;
+	required int32 argument_2 = 3;
+}
+message MsgTaskConfigInfo
+{
+	required int32 taskID = 1;
+	repeated MsgTaskConditionInfo task_condition = 2;
+	required int32 require_time = 3;
+	required int32 require_unlock_chapter = 4;
+	required int32 require_unlock_section = 5;
+	required int32 require_unlock_complete_task_count = 6;
+	required int32 gift_gold = 7;
+	required string describe = 8;
+}
+
+
+message MsgShopConfigInfo
+{
+	required int32 grid_id = 1;
+	required int32 hero_id = 2;
+	required int32 require_gold = 3;
+	required int32 cheape_gold = 4;
+}
+
+message MsgTaskInfo
+{
+	required int32 TaskID = 1;
+	required int32 argument_1 = 2;
+	required int32 useTime = 3;
+}
+
+message MsgChapterConfigInfo
+{
+	required int32 chapter_id = 1;
+	required int32 required_chapter_id = 2;
+	required int32 required_section_id = 3;
+	required int32 required_task_complete_count = 4;
+	required int32 require_gold = 5;
+	required int32 max_section_count = 6;
+}
+
+message MsgGoldShopConfigInfo
+{
+	required int32 id = 1;
+	required int32 resource_id = 2;
+	required int32 gold = 3;
+	required float money = 4;
+	required string describe = 5;
+}
+
