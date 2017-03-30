@@ -88,8 +88,7 @@ message MsgS2CEnterGameACK
 	required int32 section_id = 2;
 	repeated MsgDropBoxConfig drop_box_configs = 3;
 	repeated MsgObjConfig kill_list = 4;
-	required GameError error = 5 [default=Error_NO];
-	
+	required GameError error = 5 [default=Error_NO];	
 }
 
 
